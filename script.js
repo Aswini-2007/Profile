@@ -102,3 +102,19 @@ document.addEventListener('keydown', function (e) {
     closeCertificate();
   }
 });
+const burger = document.getElementById('burger');
+const navlinks = document.getElementById('navlinks');
+
+// Click the 3 lines: open/close the menu
+burger.addEventListener('click', () => {
+  const open = navlinks.classList.toggle('open');
+  burger.setAttribute('aria-expanded', open ? 'true' : 'false');
+});
+
+// Click any link inside the menu: close it (the browser handles the scroll to #section)
+navlinks.querySelectorAll('a').forEach(link => {
+  link.addEventListener('click', () => {
+    navlinks.classList.remove('open');
+    burger.setAttribute('aria-expanded', 'false');
+  });
+});
