@@ -693,3 +693,153 @@ footer .wrap {
 		transition: none !important;
 	}
 }
+
+* {
+	margin: 0;
+	padding: 0;
+	box-sizing: border-box;
+}
+
+body {
+	background: #0b0f14;
+	color: white;
+	font-family: Arial, sans-serif;
+	padding: 30px;
+}
+
+/* MAIN SECTION */
+.certificates-section {
+	padding: 40px 4%;
+}
+
+/* HEADING */
+.certificates-section h1 {
+	color: #8fc7ff;
+	font-size: 32px;
+	margin-bottom: 10px;
+}
+
+/* SUBTITLE */
+.subtitle {
+	color: #9aa7b5;
+	font-size: 17px;
+	margin-bottom: 35px;
+}
+
+/* CERTIFICATE GRID */
+.certificate-grid {
+	display: grid;
+	grid-template-columns: repeat(3, 1fr);
+	gap: 28px;
+}
+
+/* CERTIFICATE CARD */
+.certificate-card {
+	min-height: 300px;
+	background: #151b21;
+	border: 1px solid #29333e;
+	border-radius: 25px;
+	padding: 25px;
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	justify-content: center;
+	gap: 18px;
+	text-decoration: none;
+	cursor: pointer;
+	transition: all 0.3s ease;
+}
+
+/* HOVER EFFECT */
+.certificate-card:hover {
+	transform: translateY(-6px);
+	border-color: #6caeff;
+	box-shadow: 0 10px 30px rgba(80, 150, 255, 0.18);
+}
+
+/* CERTIFICATE IMAGE */
+.certificate-card img {
+	width: 100%;
+	max-height: 180px;
+	object-fit: contain;
+	background: white;
+	border-radius: 8px;
+}
+
+/* TITLE */
+.certificate-card h2 {
+	font-size: 22px;
+	line-height: 1.2;
+	color: white;
+	text-align: center;
+}
+
+/* POPUP / MODAL */
+.modal {
+	display: none;
+	position: fixed;
+	z-index: 1000;
+	top: 0;
+	left: 0;
+	width: 100%;
+	height: 100%;
+	background: rgba(0, 0, 0, 0.92);
+	align-items: center;
+	justify-content: center;
+	padding: 30px;
+}
+
+/* FULL CERTIFICATE IMAGE */
+.modal img {
+	max-width: 90%;
+	max-height: 90vh;
+	object-fit: contain;
+	border-radius: 8px;
+	box-shadow: 0 0 30px rgba(255, 255, 255, 0.15);
+}
+
+/* CLOSE BUTTON */
+.close {
+	position: absolute;
+	top: 20px;
+	right: 35px;
+	font-size: 50px;
+	color: white;
+	cursor: pointer;
+	transition: 0.2s;
+}
+
+.close:hover {
+	color: #6caeff;
+}
+
+/* TABLET */
+@media (max-width: 1100px) {
+	.certificate-grid {
+		grid-template-columns: repeat(2, 1fr);
+	}
+}
+
+/* MOBILE */
+@media (max-width: 650px) {
+	.certificates-section {
+		padding: 25px 20px;
+	}
+
+	.certificate-grid {
+		grid-template-columns: 1fr;
+	}
+
+	.certificate-card {
+		min-height: auto;
+		padding: 20px;
+	}
+
+	.certificate-card img {
+		max-height: 140px;
+	}
+
+	.certificate-card h2 {
+		font-size: 18px;
+	}
+}
