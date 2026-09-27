@@ -102,6 +102,7 @@ document.addEventListener('keydown', function (e) {
     closeCertificate();
   }
 });
+
 const burger = document.getElementById('burger');
 const navlinks = document.getElementById('navlinks');
 
