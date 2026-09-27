@@ -65,3 +65,40 @@ searchInput.addEventListener('input', () => {
   searchMeta.textContent = q ? `Showing ${shown} of ${cards.length} certificates` : `Showing all ${cards.length} certificates`;
   if(q) document.getElementById('certificates').scrollIntoView({behavior:'smooth', block:'start'});
 });
+
+// Grab all certificate cards and the modal elements
+const certificateCards = document.querySelectorAll('.certificate-card');
+const certificateModal = document.getElementById('certificateModal');
+const fullCertificate = document.getElementById('fullCertificate');
+
+// When a certificate card is clicked, open it inside the modal instead of a new tab
+certificateCards.forEach(card => {
+  card.addEventListener('click', function (e) {
+    e.preventDefault(); // stop the <a> from opening the image in a new tab
+    const fullImageUrl = card.getAttribute('href'); // the full-size certificate URL
+    fullCertificate.src = fullImageUrl;
+    certificateModal.style.display = 'flex';
+    document.body.style.overflow = 'hidden'; // lock background scroll while modal is open
+  });
+});
+
+// Close button (referenced by your existing onclick="closeCertificate()")
+function closeCertificate() {
+  certificateModal.style.display = 'none';
+  fullCertificate.src = '';
+  document.body.style.overflow = '';
+}
+
+// Also close if the dark backdrop itself is clicked (outside the image)
+certificateModal.addEventListener('click', function (e) {
+  if (e.target === certificateModal) {
+    closeCertificate();
+  }
+});
+
+// Also close with the Escape key
+document.addEventListener('keydown', function (e) {
+  if (e.key === 'Escape') {
+    closeCertificate();
+  }
+});
