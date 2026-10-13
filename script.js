@@ -1,121 +1,205 @@
-const burger = document.getElementById('burger');
-const navlinks = document.getElementById('navlinks');
-burger.addEventListener('click', () => {
-  const open = navlinks.classList.toggle('open');
-  burger.setAttribute('aria-expanded', open ? 'true' : 'false');
-});
-navlinks.querySelectorAll('a').forEach(a => a.addEventListener('click', () => {
-  navlinks.classList.remove('open');
-  burger.setAttribute('aria-expanded', 'false');
-}));
+<!-- JAVASCRIPT LOGIC -->
+	<script>
+		document.addEventListener('DOMContentLoaded', () => {
 
-const modalOverlay = document.getElementById('modalOverlay');
-const modalTitle = document.getElementById('modalTitle');
-const modalMeta = document.getElementById('modalMeta');
-const modalBody = document.getElementById('modalBody');
-const modalClose = document.getElementById('modalClose');
+			// Mobile Navigation Drawer Toggle
+			const burger = document.getElementById('burger');
+			const burgerIcon = document.getElementById('burgerIcon');
+			const mobileMenu = document.getElementById('mobileMenu');
 
-document.querySelectorAll('#education .reveal-card').forEach(card => {
-  card.addEventListener('click', () => {
-    modalTitle.textContent = card.dataset.modalTitle;
-    modalMeta.textContent = card.dataset.modalMeta;
-    modalBody.textContent = card.dataset.modalBody;
-    modalOverlay.classList.add('open');
-    document.body.style.overflow = 'hidden';
-  });
-});
-function closeModal(){ modalOverlay.classList.remove('open'); document.body.style.overflow = ''; }
-modalClose.addEventListener('click', closeModal);
-modalOverlay.addEventListener('click', (e) => { if(e.target === modalOverlay) closeModal(); });
+			burger.addEventListener('click', () => {
+				const isHidden = mobileMenu.classList.contains('hidden');
+				if (isHidden) {
+					mobileMenu.classList.remove('hidden');
+					burgerIcon.classList.remove('fa-bars');
+					burgerIcon.classList.add('fa-xmark');
+				} else {
+					mobileMenu.classList.add('hidden');
+					burgerIcon.classList.remove('fa-xmark');
+					burgerIcon.classList.add('fa-bars');
+				}
+			});
 
-const lightbox = document.getElementById('lightbox');
-const lightboxImg = document.getElementById('lightboxImg');
-const lightboxT = document.getElementById('lightboxT');
-const lightboxI = document.getElementById('lightboxI');
-const lightboxClose = document.getElementById('lightboxClose');
+			mobileMenu.querySelectorAll('a').forEach(link => {
+				link.addEventListener('click', () => {
+					mobileMenu.classList.add('hidden');
+					burgerIcon.classList.remove('fa-xmark');
+					burgerIcon.classList.add('fa-bars');
+				});
+			});
 
-document.querySelectorAll('#certGrid .reveal-card').forEach(card => {
-  card.addEventListener('click', () => {
-    lightboxImg.src = card.dataset.full;
-    lightboxImg.alt = card.dataset.title;
-    lightboxT.textContent = card.dataset.title;
-    lightboxI.textContent = card.dataset.issuer;
-    lightbox.classList.add('open');
-    document.body.style.overflow = 'hidden';
-  });
-});
-function closeLightbox(){ lightbox.classList.remove('open'); document.body.style.overflow = ''; }
-lightboxClose.addEventListener('click', closeLightbox);
-lightbox.addEventListener('click', (e) => { if(e.target === lightbox) closeLightbox(); });
-document.addEventListener('keydown', (e) => {
-  if(e.key === 'Escape'){ closeLightbox(); closeModal(); }
-});
+			// Education Detail Modal Logic
+			const eduModal = document.getElementById('eduModal');
+			const eduModalBox = document.getElementById('eduModalBox');
+			const eduModalTitle = document.getElementById('eduModalTitle');
+			const eduModalMeta = document.getElementById('eduModalMeta');
+			const eduModalBody = document.getElementById('eduModalBody');
+			const eduModalClose = document.getElementById('eduModalClose');
+			const eduModalCloseBtn = document.getElementById('eduModalCloseBtn');
 
-const searchInput = document.getElementById('searchInput');
-const searchMeta = document.getElementById('searchMeta');
-const cards = Array.from(document.querySelectorAll('#certGrid .reveal-card'));
-searchInput.addEventListener('input', () => {
-  const q = searchInput.value.trim().toLowerCase();
-  let shown = 0;
-  cards.forEach(card => {
-    const match = card.dataset.search.includes(q);
-    card.classList.toggle('hidden', !match);
-    if(match) shown++;
-  });
-  searchMeta.textContent = q ? `Showing ${shown} of ${cards.length} certificates` : `Showing all ${cards.length} certificates`;
-  if(q) document.getElementById('certificates').scrollIntoView({behavior:'smooth', block:'start'});
-});
+			function openEduModal(title, meta, body) {
+				eduModalTitle.textContent = title;
+				eduModalMeta.textContent = meta;
+				eduModalBody.textContent = body;
 
-// Grab all certificate cards and the modal elements
-const certificateCards = document.querySelectorAll('.certificate-card');
-const certificateModal = document.getElementById('certificateModal');
-const fullCertificate = document.getElementById('fullCertificate');
+				eduModal.classList.remove('opacity-0', 'pointer-events-none');
+				eduModalBox.classList.remove('scale-95');
+				eduModalBox.classList.add('scale-100');
+				document.body.style.overflow = 'hidden';
+			}
 
-// When a certificate card is clicked, open it inside the modal instead of a new tab
-certificateCards.forEach(card => {
-  card.addEventListener('click', function (e) {
-    e.preventDefault(); // stop the <a> from opening the image in a new tab
-    const fullImageUrl = card.getAttribute('href'); // the full-size certificate URL
-    fullCertificate.src = fullImageUrl;
-    certificateModal.style.display = 'flex';
-    document.body.style.overflow = 'hidden'; // lock background scroll while modal is open
-  });
-});
+			function closeEduModal() {
+				eduModal.classList.add('opacity-0', 'pointer-events-none');
+				eduModalBox.classList.remove('scale-100');
+				eduModalBox.classList.add('scale-95');
+				document.body.style.overflow = '';
+			}
 
-// Close button (referenced by your existing onclick="closeCertificate()")
-function closeCertificate() {
-  certificateModal.style.display = 'none';
-  fullCertificate.src = '';
-  document.body.style.overflow = '';
-}
+			document.querySelectorAll('.reveal-edu').forEach(card => {
+				card.addEventListener('click', () => {
+					openEduModal(card.dataset.modalTitle, card.dataset.modalMeta, card.dataset.modalBody);
+				});
+			});
 
-// Also close if the dark backdrop itself is clicked (outside the image)
-certificateModal.addEventListener('click', function (e) {
-  if (e.target === certificateModal) {
-    closeCertificate();
-  }
-});
+			[eduModalClose, eduModalCloseBtn].forEach(btn => btn.addEventListener('click', closeEduModal));
+			eduModal.addEventListener('click', (e) => {
+				if (e.target === eduModal) closeEduModal();
+			});
 
-// Also close with the Escape key
-document.addEventListener('keydown', function (e) {
-  if (e.key === 'Escape') {
-    closeCertificate();
-  }
-});
+			// Certificate Filter & Search Logic
+			const certSearch = document.getElementById('certSearch');
+			const filterBtns = document.querySelectorAll('.filter-btn');
+			const certCards = document.querySelectorAll('.cert-card');
+			const certCounter = document.getElementById('certCounter');
 
-const burger = document.getElementById('burger');
-const navlinks = document.getElementById('navlinks');
+			let currentCategory = 'all';
 
-// Click the 3 lines: open/close the menu
-burger.addEventListener('click', () => {
-  const open = navlinks.classList.toggle('open');
-  burger.setAttribute('aria-expanded', open ? 'true' : 'false');
-});
+			function filterCertificates() {
+				const query = certSearch.value.trim().toLowerCase();
+				let visibleCount = 0;
 
-// Click any link inside the menu: close it (the browser handles the scroll to #section)
-navlinks.querySelectorAll('a').forEach(link => {
-  link.addEventListener('click', () => {
-    navlinks.classList.remove('open');
-    burger.setAttribute('aria-expanded', 'false');
-  });
-});
+				certCards.forEach(card => {
+					const category = card.dataset.category;
+					const searchData = card.dataset.search.toLowerCase();
+
+					const matchesCategory = (currentCategory === 'all') || (category === currentCategory);
+					const matchesQuery = query === '' || searchData.includes(query);
+
+					if (matchesCategory && matchesQuery) {
+						card.style.display = 'flex';
+						visibleCount++;
+					} else {
+						card.style.display = 'none';
+					}
+				});
+
+				certCounter.textContent = `Showing ${visibleCount} of ${certCards.length} certificates`;
+			}
+
+			filterBtns.forEach(btn => {
+				btn.addEventListener('click', () => {
+					filterBtns.forEach(b => {
+						b.classList.remove('bg-sky-500', 'text-slate-950', 'shadow-md', 'shadow-sky-500/20');
+						b.classList.add('bg-slate-900', 'border', 'border-slate-800', 'text-slate-400');
+					});
+					btn.classList.remove('bg-slate-900', 'border', 'border-slate-800', 'text-slate-400');
+					btn.classList.add('bg-sky-500', 'text-slate-950', 'shadow-md', 'shadow-sky-500/20');
+
+					currentCategory = btn.dataset.cat;
+					filterCertificates();
+				});
+			});
+
+			certSearch.addEventListener('input', filterCertificates);
+
+			// Certificate Lightbox Modal Logic
+			const certModal = document.getElementById('certModal');
+			const certModalImg = document.getElementById('certModalImg');
+			const certModalTitle = document.getElementById('certModalTitle');
+			const certModalIssuer = document.getElementById('certModalIssuer');
+			const certModalClose = document.getElementById('certModalClose');
+
+			function openCertModal(imgUrl, title, issuer) {
+				certModalImg.src = imgUrl;
+				certModalTitle.textContent = title;
+				certModalIssuer.textContent = issuer;
+
+				certModal.classList.remove('opacity-0', 'pointer-events-none');
+				document.body.style.overflow = 'hidden';
+			}
+
+			function closeCertModal() {
+				certModal.classList.add('opacity-0', 'pointer-events-none');
+				certModalImg.src = '';
+				document.body.style.overflow = '';
+			}
+
+			certCards.forEach(card => {
+				card.addEventListener('click', () => {
+					openCertModal(card.dataset.full, card.dataset.title, card.dataset.issuer);
+				});
+			});
+
+			certModalClose.addEventListener('click', closeCertModal);
+			certModal.addEventListener('click', (e) => {
+				if (e.target === certModal) closeCertModal();
+			});
+
+			// ESC key listener to close active overlays
+			document.addEventListener('keydown', (e) => {
+				if (e.key === 'Escape') {
+					closeEduModal();
+					closeCertModal();
+				}
+			});
+
+			// Toast Alert System
+			const toast = document.getElementById('toast');
+			const toastTitle = document.getElementById('toastTitle');
+			const toastMsg = document.getElementById('toastMsg');
+			let toastTimer;
+
+			function showToast(title, message) {
+				toastTitle.textContent = title;
+				toastMsg.textContent = message;
+				toast.classList.remove('hidden-toast');
+
+				clearTimeout(toastTimer);
+				toastTimer = setTimeout(() => {
+					toast.classList.add('hidden-toast');
+				}, 3500);
+			}
+
+			// Copy-to-clipboard buttons
+			document.querySelectorAll('.copy-btn').forEach(btn => {
+				btn.addEventListener('click', (e) => {
+					e.preventDefault();
+					const textToCopy = btn.dataset.copy;
+
+					// Safe clipboard fallback for iframe context
+					const dummy = document.createElement('textarea');
+					document.body.appendChild(dummy);
+					dummy.value = textToCopy;
+					dummy.select();
+					document.execCommand('copy');
+					document.body.removeChild(dummy);
+
+					showToast('Copied to Clipboard!', textToCopy);
+				});
+			});
+
+			// Contact Form Handler
+			const contactForm = document.getElementById('contactForm');
+			contactForm.addEventListener('submit', (e) => {
+				e.preventDefault();
+				const name = document.getElementById('formName').value;
+
+				showToast('Message Sent!', `Thank you ${name}, your message has been transmitted.`);
+				contactForm.reset();
+			});
+
+		});
+	</script>
+</body>
+
+</html>
