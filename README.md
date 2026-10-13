@@ -1,4 +1,4 @@
-#  Personal Portfolio Website
+#   Portfolio Website
 
 Welcome to my **Personal Portfolio Website**, designed and developed using **HTML, CSS, and JavaScript**, inspired by my resume and professional profile.
 
