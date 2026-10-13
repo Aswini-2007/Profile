@@ -40,6 +40,7 @@ I am a Computer Science and Engineering student passionate about software develo
 
 * **LinkedIn:** [Connect with me](https://linkedin.com/in/aswini-cse2025)
 * **GitHub:** [Explore my repositories](https://github.com/Aswini-2007)
+* **profile:** [Explore my website](https://aswini-2007.github.io/Profile/)
 
 ---
 
