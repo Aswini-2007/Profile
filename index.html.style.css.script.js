@@ -289,8 +289,8 @@
 								<i class="fa-solid fa-shield-halved"></i>
 							</div>
 							<div>
-								<div class="text-xs font-bold text-slate-200">Focus Domain</div>
-								<div class="text-[11px] text-sky-400 font-semibold">Cyber Security</div>
+								<div class="text-xs font-bold text-slate-200">Theme</div>
+								<div class="text-[11px] text-sky-400 font-semibold">Profile</div>
 							</div>
 						</div>
 					</div>
